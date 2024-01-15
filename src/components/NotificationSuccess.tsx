@@ -25,7 +25,7 @@ export default function NotificationSuccess() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-purple-900 shadow-lg ring-1 ring-black ring-opacity-5">
+            <div className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-[#4a044e] shadow-lg ring-1 ring-black ring-opacity-5">
               <div className="p-4">
                 <div className="flex items-start">
                   <div className="flex-shrink-0">
@@ -38,7 +38,7 @@ export default function NotificationSuccess() {
                   <div className="ml-4 flex flex-shrink-0">
                     <button
                       type="button"
-                      className="inline-flex rounded-md bg-purple-950 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      className="inline-flex rounded-md bg-[#701a75] text-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       onClick={() => {
                         setShow(false)
                       }}

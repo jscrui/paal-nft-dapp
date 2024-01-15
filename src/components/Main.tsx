@@ -17,6 +17,12 @@ import Gecko from '../media/images/icons/5-gecko.png';
 import Bit from '../media/images/icons/6-bit.png';
 import Google from '../media/images/icons/7-google.png';
 
+//Import Media Brands
+import OkxLogo from '../media/images/brands/okx-logo.png';
+import CoingeckoLogo from '../media/images/brands/coingecko-logo.png';
+
+import GeckoTerminalLogo from '../media/images/brands/geckoterminal-logo.png';
+
 //Web3
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction, useAccount, useContractRead } from "wagmi";
 import { PAALXBotsCollectionABI } from '../abi/PAALXBotsCollection-abi'
@@ -24,15 +30,16 @@ const PAALXBotsAddress = import.meta.env.VITE_NFT_COLLECTION_ADDRESS;
 import { parseEther } from 'viem'
 
 //Import Component
-import ConfirmMint from './ConfirmMint';
 import NotificationSuccess from './NotificationSuccess'
+import NotificationError from './NotificationError'
 
 
 export default function Main() {
-    const { isConnected } = useAccount();
+    const { isConnected, address } = useAccount();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const [amountToMint, setAmountToMint] = useState(1)    
-    const [showError, setShowError] = useState(0)
+    const [amountToMint, setAmountToMint] = useState(1)  
+    
+    console.log("isConnected with:", address)
 
     const {
         config: configMintSingle,
@@ -41,21 +48,22 @@ export default function Main() {
     } = usePrepareContractWrite({
         address: PAALXBotsAddress, // default empty address
         abi: PAALXBotsCollectionABI,
-        functionName: 'mint',
-        value: parseEther('0.001'),
+        functionName: 'mintBatch',
+        args: [amountToMint],
+        value: parseEther((0.001 * amountToMint).toString()),
     });
 
     const {
         data: dataMintSingle,
         error: errorMintSingle,
-        isError: isErrorSingle,
+        isError: isErrorMintSingle,
         write: writeMintSingle
     } = useContractWrite(configMintSingle);
 
 
     const {
         isLoading: isLoadingMintSingle,
-        isSuccess: isSuccessMintSingle
+        isSuccess: isSuccessMintSingle,        
     } = useWaitForTransaction({
         hash: dataMintSingle?.hash,
     });
@@ -148,17 +156,22 @@ export default function Main() {
                                 </h2>
 
                                 <div className="mt-10 flex items-center justify-center gap-x-6">
-                                    <a href="#" className="rounded-md border border-purple-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:border-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">
+                                    <a href="#how-to-section" className="rounded-md border border-purple-600 px-3.5 py-1.5 sm:py-2.5 text-sm font-semibold text-white shadow-sm hover:border-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">
                                         How it Works?
                                     </a>
                                     {
-                                        !isConnected ? <w3m-button /> : (  
+                                        !isConnected ? <w3m-button size='md' /> : (  
                                             
-                                            isErrorPreparingMintSingle ? (<>Mint not open</>) : (
+                                            isErrorPreparingMintSingle ? 
+                                                (
+                                                <div className="cursor-not-allowed rounded-md border border-purple-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:border-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">
+                                                    Mint Closed
+                                                </div>
+                                                ) : (
                                                 <div onClick={writeMintSingle} className={`${isLoadingMintSingle ? "cursor-pointer" : "" } rounded-md bg-purple-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400 cursor-pointer`}>
                                                     Mint {amountToMint} NFT
                                                 </div>
-                                            )
+                                                )
                                         )
                                     }
 
@@ -199,35 +212,35 @@ export default function Main() {
                         <div className="mx-auto grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
                             <img
                                 className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-                                src="https://tailwindui.com/img/logos/158x48/transistor-logo-white.svg"
-                                alt="Transistor"
+                                src="https://paalai.io/assets/Amino-c27fc2fa.png"
+                                alt="Amino Awards"
                                 width={158}
                                 height={48}
                             />
                             <img
                                 className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-                                src="https://tailwindui.com/img/logos/158x48/reform-logo-white.svg"
-                                alt="Reform"
+                                src="https://paalai.io/assets/gcloud-4ce53006.png"
+                                alt="Google Cloud"
                                 width={158}
                                 height={48}
                             />
                             <img
                                 className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-                                src="https://tailwindui.com/img/logos/158x48/tuple-logo-white.svg"
-                                alt="Tuple"
+                                src={OkxLogo}
+                                alt="OKX Logo"
                                 width={158}
                                 height={48}
                             />
                             <img
                                 className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1"
-                                src="https://tailwindui.com/img/logos/158x48/savvycal-logo-white.svg"
-                                alt="SavvyCal"
+                                src={CoingeckoLogo}
+                                alt="Coingecko Logo"
                                 width={158}
                                 height={48}
                             />
                             <img
                                 className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1"
-                                src="https://tailwindui.com/img/logos/158x48/statamic-logo-white.svg"
+                                src={GeckoTerminalLogo}
                                 alt="Statamic"
                                 width={158}
                                 height={48}
@@ -240,7 +253,7 @@ export default function Main() {
 
                 {/* About PAALX section */}
                 {/* <div className="relative isolate mt-32 bg-white px-6 sm:mt-56 lg:px-8"> */}
-                <div className="relative isolate bg-white px-6 lg:px-8 pb-24">
+                <div className="relative isolate bg-white px-6 lg:px-8 pb-24" id='how-to-section'>
                     <img src={BackgroundSection} alt="" className="absolute inset-0 -z-10 h-full w-full object-cover backdrop-brightness-0" />
                     <div
                         className="absolute inset-x-0 -top-3 -z-10 transform-gpu overflow-hidden px-36 blur-3xl"
@@ -380,26 +393,30 @@ export default function Main() {
             </main>
 
             {/* Footer */}
-            <footer className="flex justify-center items-center bg-black border-t py-12 border-purple-500" aria-labelledby="footer-heading">
+            <footer className="flex justify-center flex-col items-center bg-black border-t py-12 border-purple-500" aria-labelledby="footer-heading">
                 {/** Paal Logo */}
                 <div className="flex justify-center items-center lg:mr-10">
                     <img className="h-14 w-auto" src="https://paalai.io/assets/paal-ai-logo-cb568b71.png" alt="" />
                 </div>
                 {/* Logo cloud */}
-                <div className="grid max-w-lg grid-cols-4 justify-items-center items-center gap-x-1 gap-y-10 sm:max-w-xl sm:grid-cols-6 lg:max-w-2xl lg:grid-cols-7">
-                    <img className="max-h-12 w-full object-contain" src={Twitter} alt="Transistor" />
-                    <img className="max-h-12 w-full object-contain" src={Telegram} alt="Reform" />
-                    <img className="max-h-12 w-full object-contain" src={Discord} alt="Tuple" />
-                    <img className="max-h-12 w-full object-contain" src={Dextools} alt="SavvyCal" />
-                    <img className="max-h-12 w-full object-contain" src={Gecko} alt="Statamic" />
-                    <img className="max-h-12 w-full object-contain" src={Bit} alt="Statamic" />
-                    <img className="max-h-12 w-full object-contain" src={Google} alt="Statamic" />
+                <div className="mt-8 grid max-w-lg grid-cols-4 justify-items-center items-center gap-x-1 gap-y-10 sm:max-w-xl sm:grid-cols-6 lg:max-w-2xl lg:grid-cols-7">
+                    <img className="max-h-12 w-full object-contain" src={Twitter} alt="Twitter" />
+                    <img className="max-h-12 w-full object-contain" src={Telegram} alt="Telegram" />
+                    <img className="max-h-12 w-full object-contain" src={Discord} alt="Discord" />
+                    <img className="max-h-12 w-full object-contain" src={Dextools} alt="Dextools" />
+                    <img className="max-h-12 w-full object-contain hidden sm:block" src={Gecko} alt="Gecko" />
+                    <img className="max-h-12 w-full object-contain hidden sm:block" src={Bit} alt="Bit" />
+                    <img className="max-h-12 w-full object-contain hidden sm:block" src={Google} alt="Google" />
                 </div>
             </footer>
 
             
             {
                 isSuccessMintSingle ? <NotificationSuccess/> : ""
+            }
+
+            {
+                isErrorMintSingle ? <NotificationError/> : ""
             }
 
 
