@@ -15,7 +15,7 @@ import Discord from '../media/images/icons/3-discord.png';
 import Dextools from '../media/images/icons/4-dextools.png';
 import Gecko from '../media/images/icons/5-gecko.png';
 import Bit from '../media/images/icons/6-bit.png';
-import Google from '../media/images/icons/7-google.png';
+import Gateio from '../media/images/icons/7-gateio.png';
 
 //Import Media Brands
 import OkxLogo from '../media/images/brands/okx-logo.png';
@@ -444,13 +444,27 @@ export default function Main() {
                 </div>
                 {/* Logo cloud */}
                 <div className="mt-8 grid max-w-lg grid-cols-4 justify-items-center items-center gap-x-1 gap-y-10 sm:max-w-xl sm:grid-cols-6 lg:max-w-2xl lg:grid-cols-7">
-                    <img className="max-h-12 w-full object-contain" src={Twitter} alt="Twitter" />
-                    <img className="max-h-12 w-full object-contain" src={Telegram} alt="Telegram" />
-                    <img className="max-h-12 w-full object-contain" src={Discord} alt="Discord" />
-                    <img className="max-h-12 w-full object-contain" src={Dextools} alt="Dextools" />
-                    <img className="max-h-12 w-full object-contain hidden sm:block" src={Gecko} alt="Gecko" />
-                    <img className="max-h-12 w-full object-contain hidden sm:block" src={Bit} alt="Bit" />
-                    <img className="max-h-12 w-full object-contain hidden sm:block" src={Google} alt="Google" />
+                    <a href="https://twitter.com/PaalMind">
+                        <img className="max-h-12 w-full object-contain" src={Twitter} alt="Twitter" />
+                    </a>
+                    <a href="https://t.me/paal_ai">
+                        <img className="max-h-12 w-full object-contain" src={Telegram} alt="Telegram" />
+                    </a>
+                    <a href="https://discord.com/invite/paalai">
+                        <img className="max-h-12 w-full object-contain" src={Discord} alt="Discord" />
+                    </a>
+                    <a href="https://www.dextools.io/app/en/ether/pair-explorer/0x2a6c340bcbb0a79d3deecd3bc5cbc2605ea9259f">
+                        <img className="max-h-12 w-full object-contain" src={Dextools} alt="Dextools" />
+                    </a>
+                    <a href="https://www.geckoterminal.com/eth/pools/0x2a6c340bcbb0a79d3deecd3bc5cbc2605ea9259f">
+                        <img className="max-h-12 w-full object-contain hidden sm:block" src={Gecko} alt="Gecko" />
+                    </a>
+                    <a href="https://www.bitmart.com/trade/en-US?symbol=PAAL_USDT">
+                        <img className="max-h-12 w-full object-contain hidden sm:block" src={Bit} alt="Bit" />
+                    </a>
+                    <a href="https://www.gate.io/trade/PAAL_USDT">
+                        <img className="max-h-12 w-full object-contain hidden sm:block" src={Gateio} alt="Google" />
+                    </a>
                 </div>
             </footer>
 
@@ -462,7 +476,6 @@ export default function Main() {
             {
                 isErrorMintSingle ? <NotificationError /> : ""
             }
-
 
 
         </div>
