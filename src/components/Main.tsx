@@ -420,7 +420,7 @@ export default function Main() {
 
                         {
                             tokensHoldByAddress.map((tokenId, index) => (
-                                <div className='border-custom-purple rounded-2xl text-center px-6 pt-6 pb-4 relative my-16 lg:mb-0' key={index}>
+                                <div className='border-custom-purple rounded-2xl text-center px-6 pt-6 pb-4 relative my-3 lg:mb-0' key={index}>
                                     <img src={'https://luxury-pudding-a5ff74.netlify.app/images/'+tokenId+'.png'} alt="" />
                                     <p className='text-gray-200 mt-8'>
                                         NFT #{tokenId}
