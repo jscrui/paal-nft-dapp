@@ -25,6 +25,7 @@ import GeckoTerminalLogo from '../media/images/brands/geckoterminal-logo.png';
 
 //Web3
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction, useAccount, useContractRead } from "wagmi";
+import { readContract } from "@wagmi/core"
 import { PAALXBotsCollectionABI } from '../abi/PAALXBotsCollection-abi'
 const PAALXBotsAddress = import.meta.env.VITE_NFT_COLLECTION_ADDRESS;
 import { parseEther } from 'viem'
@@ -37,10 +38,55 @@ import NotificationError from './NotificationError'
 export default function Main() {
     const { isConnected, address } = useAccount();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const [amountToMint, setAmountToMint] = useState(1)  
-    
+    const [amountToMint, setAmountToMint] = useState(1)
+    const [tokensHoldByAddress, setTokensHoldByAddress] = useState<number[]>([]);
+
     console.log("isConnected with:", address)
 
+    //Fetch and Display NFTs Functions
+    const {
+        data: balanceOfAddress,
+        error: errorNFTs,
+        isLoading: isLoadingNFTs,
+        isError: isErrorNFTs,
+    } = useContractRead({
+        abi: PAALXBotsCollectionABI,
+        address: PAALXBotsAddress,
+        functionName: 'balanceOf',
+        args: [address],
+    });
+
+    const balanceOf = Number(balanceOfAddress);
+
+    const fetchTokenURI = async () => {
+
+        let internalArrayOfTokens: number[] = [];
+
+        for (let i = 1; i < 1000; i++) {
+
+            //Check if owner is the same as the logged in address
+            readContract({
+                abi: PAALXBotsCollectionABI,
+                address: PAALXBotsAddress,
+                functionName: 'ownerOf',
+                args: [i],
+            }).then((ownerOf) => {
+                ownerOf === address ? (
+                    internalArrayOfTokens.push(i)
+                ) : null
+
+            }).catch(() => {
+                let i = 1001;
+            })
+
+        }
+
+        setTokensHoldByAddress(internalArrayOfTokens);
+
+    };
+
+
+    //Minting Functions
     const {
         config: configMintSingle,
         error: errorPreparingMintSingle,
@@ -63,15 +109,20 @@ export default function Main() {
 
     const {
         isLoading: isLoadingMintSingle,
-        isSuccess: isSuccessMintSingle,        
+        isSuccess: isSuccessMintSingle,
     } = useWaitForTransaction({
         hash: dataMintSingle?.hash,
     });
-    
+
+
+    //call fetchTokenURI function only once or if the address changes
+    useEffect(() => {
+        fetchTokenURI();
+    }, [address]);
 
     return (
         <div className="bg-white">
-            
+
             <main className='bg-black'>
                 {/* Header */}
                 <header className="absolute inset-x-0 top-0 z-50">
@@ -160,17 +211,17 @@ export default function Main() {
                                         How it Works?
                                     </a>
                                     {
-                                        !isConnected ? <w3m-button size='md' /> : (  
-                                            
-                                            isErrorPreparingMintSingle ? 
+                                        !isConnected ? <w3m-button size='md' /> : (
+
+                                            isErrorPreparingMintSingle ?
                                                 (
-                                                <div className="cursor-not-allowed rounded-md border border-purple-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:border-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">
-                                                    Mint Closed
-                                                </div>
+                                                    <div className="cursor-not-allowed rounded-md border border-purple-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:border-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">
+                                                        Mint Closed
+                                                    </div>
                                                 ) : (
-                                                <div onClick={writeMintSingle} className={`${isLoadingMintSingle ? "cursor-pointer" : "" } rounded-md bg-purple-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400 cursor-pointer`}>
-                                                    Mint {amountToMint} NFT
-                                                </div>
+                                                    <div onClick={writeMintSingle} className={`${isLoadingMintSingle ? "cursor-pointer" : ""} rounded-md bg-purple-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400 cursor-pointer`}>
+                                                        Mint {amountToMint} NFT
+                                                    </div>
                                                 )
                                         )
                                     }
@@ -367,24 +418,17 @@ export default function Main() {
                     */}
                     <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-end gap-y-6 sm:mt-6 sm:gap-y-0 lg:max-w-5xl lg:grid-cols-3 gap-x-3">
 
-                        <div className='border-custom-purple rounded-2xl text-center px-6 pt-6 pb-4 relative my-16 lg:mb-0'>
-                            <img src={NftExample} alt="" />
-                            <p className='text-gray-200 mt-8'>
-                                NFT #241
-                            </p>
-                        </div>
-                        <div className='border-custom-purple rounded-2xl text-center px-6 pt-6 pb-4 relative my-16 lg:mb-0'>
-                            <img src={NftExample} alt="" />
-                            <p className='text-gray-200 mt-8'>
-                                NFT #247
-                            </p>
-                        </div>
-                        <div className='border-custom-purple rounded-2xl text-center px-6 pt-6 pb-4 relative my-16 lg:mb-0'>
-                            <img src={NftExample} alt="" />
-                            <p className='text-gray-200 mt-8'>
-                                NFT #491
-                            </p>
-                        </div>
+                        {
+                            tokensHoldByAddress.map((tokenMetadata, index) => (
+                                <div className='border-custom-purple rounded-2xl text-center px-6 pt-6 pb-4 relative my-16 lg:mb-0' key={index}>
+                                    <img src={NftExample} alt="" />
+                                    <p className='text-gray-200 mt-8'>
+                                        NFT #{tokenMetadata}
+                                    </p>
+                                </div>
+                            ))
+                        }
+
 
                     </div>
 
@@ -410,13 +454,13 @@ export default function Main() {
                 </div>
             </footer>
 
-            
+
             {
-                isSuccessMintSingle ? <NotificationSuccess/> : ""
+                isSuccessMintSingle ? <NotificationSuccess /> : ""
             }
 
             {
-                isErrorMintSingle ? <NotificationError/> : ""
+                isErrorMintSingle ? <NotificationError /> : ""
             }
 
 
