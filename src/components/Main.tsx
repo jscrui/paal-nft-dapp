@@ -419,11 +419,11 @@ export default function Main() {
                     <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-end gap-y-6 sm:mt-6 sm:gap-y-0 lg:max-w-5xl lg:grid-cols-3 gap-x-3">
 
                         {
-                            tokensHoldByAddress.map((tokenMetadata, index) => (
+                            tokensHoldByAddress.map((tokenId, index) => (
                                 <div className='border-custom-purple rounded-2xl text-center px-6 pt-6 pb-4 relative my-16 lg:mb-0' key={index}>
-                                    <img src={NftExample} alt="" />
+                                    <img src={'https://luxury-pudding-a5ff74.netlify.app/images/'+tokenId+'.png'} alt="" />
                                     <p className='text-gray-200 mt-8'>
-                                        NFT #{tokenMetadata}
+                                        NFT #{tokenId}
                                     </p>
                                 </div>
                             ))
