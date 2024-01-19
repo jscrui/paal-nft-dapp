@@ -85,6 +85,13 @@ export default function Main() {
 
     };
 
+    //Check Minted amount
+    const {data: totalSupply} = useContractRead({
+        abi: PAALXBotsCollectionABI,
+        address: PAALXBotsAddress,
+        functionName: 'totalSupply',
+    });
+
 
     //Minting Functions
     const {
@@ -118,6 +125,7 @@ export default function Main() {
     //call fetchTokenURI function only once or if the address changes
     useEffect(() => {
         fetchTokenURI();
+
     }, [address]);
 
     return (
@@ -203,7 +211,7 @@ export default function Main() {
                                 </p>
 
                                 <h2 className="text-4xl tracking-tight text-custom-purple sm:text-4xl mt-6">
-                                    Minted 0 out of 1000 NFTs
+                                    Minted {Number(totalSupply)} out of 1000 NFTs
                                 </h2>
 
                                 <div className="mt-10 flex items-center justify-center gap-x-6">
