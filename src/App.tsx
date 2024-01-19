@@ -1,7 +1,7 @@
 import { QueryClient } from '@tanstack/react-query' // Import the correct QueryClient type
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
 import { Config, WagmiConfig } from 'wagmi'
-import { mainnet, sepolia } from 'viem/chains'
+import { mainnet } from 'viem/chains'
 import Main from './components/Main'
 
 // 1. Get projectId at https://cloud.walletconnect.com
