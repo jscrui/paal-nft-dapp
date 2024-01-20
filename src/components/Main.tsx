@@ -201,7 +201,7 @@ export default function Main() {
                                     PAAL Xclusive NFT Mint Event:
                                 </p>
                                 <p className="text-lg leading-8 text-gray-300">
-                                    Access Fee-Free Trading on PaalX v1.1
+                                    Access Fee-Free Trading on PaalX v0.1
                                 </p>
                                 <p className="text-lg leading-8 text-gray-300">
                                     Earn passive ETH from NFT trading volume fees.
