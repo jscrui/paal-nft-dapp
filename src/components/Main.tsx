@@ -209,6 +209,9 @@ export default function Main() {
                                 <p className="text-lg leading-8 text-gray-300">
                                     Access to exclusive features in PaalX.
                                 </p>
+                                <p className="text-lg leading-8 text-gray-300">
+                                    First 500 for stakers last 500 anyone.
+                                </p>
 
                                 <h2 className="text-4xl tracking-tight text-custom-purple sm:text-4xl mt-6">
                                     Minted {Number(totalSupply)} out of 1000 NFTs
